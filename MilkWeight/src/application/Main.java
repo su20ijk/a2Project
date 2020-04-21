@@ -108,31 +108,25 @@ public class Main extends Application {
 			
 			top.setAlignment(Pos.CENTER);
 			root.setTop(top);
-
-		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-		
-		// Add the stuff and set the primary stage
-		primaryStage.setTitle(APP_TITLE);
-		primaryStage.setScene(mainScene);
-		primaryStage.show();
 	
 		VBox centerContainer=new VBox();
 		Label textOutputPrompt=new Label("Please enter your desired farm's ID below:");
 		textOutputPrompt.setMinSize(100, 65);
 		centerContainer.getChildren().add(textOutputPrompt);
 		
-		TextField farmIDInput=new TextField("Enter farm ID.");
+		TextField farmIDInput=new TextField();
+		farmIDInput.setPromptText("Enter farm ID.");
 		farmIDInput.setMaxWidth(200);
 		centerContainer.getChildren().add(farmIDInput);
 		
-		Label dataTable=new Label("Date table");
+		Label dataTable=new Label("<Date table>");
 		dataTable.setMinSize(500, 200);
 		dataTable.setAlignment(Pos.CENTER);
 		dataTable.setStyle("-fx-border-color: black;");
 		centerContainer.getChildren().add(dataTable);
 		
-		TextField filePath=new TextField("File path here.");
+		TextField filePath=new TextField();
+		filePath.setPromptText("File path here.");
 		filePath.setMaxWidth(100);
 		centerContainer.getChildren().add(filePath);
 		
@@ -140,6 +134,13 @@ public class Main extends Application {
 		centerContainer.setSpacing(10);
 		root.setCenter(centerContainer);
 		
+		
+		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+		
+		// Add the stuff and set the primary stage
+		primaryStage.setTitle(APP_TITLE);
+		primaryStage.setScene(mainScene);
+		primaryStage.show();
 	}
 
 	/**

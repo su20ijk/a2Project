@@ -33,7 +33,7 @@ public class Main extends Application {
 	private List<String> args;
 
 	private static final int WINDOW_WIDTH = 1000;
-	private static final int WINDOW_HEIGHT = 500;
+	private static final int WINDOW_HEIGHT = 600;
 	private static final String APP_TITLE = "Milk Weight";
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -82,7 +82,7 @@ public class Main extends Application {
 		    buttonM.setPrefSize(150, 20);
 		    
 		    leftBox.getChildren().addAll(buttonF, buttonM);
-
+		    leftBox.setAlignment(Pos.CENTER);
         
         VBox rightBox = new VBox();
 		 rightBox.setPadding(new Insets(15, 12, 15, 12));
@@ -95,17 +95,18 @@ public class Main extends Application {
 		    buttonD.setPrefSize(150, 20);
 		    
 		    rightBox.getChildren().addAll(buttonA, buttonD);
-
+		    rightBox.setAlignment(Pos.CENTER);
 		    HBox center = new HBox();
 		    center.setPadding(new Insets(15, 12, 15, 12));
 		    center.setSpacing(10);
 		    center.getChildren().addAll(leftBox, rightBox);
-		    
+		    center.setAlignment(Pos.CENTER);
 		    VBox top = new VBox();
 		    top.setPadding(new Insets(15, 12, 15, 12));
 			top.setSpacing(10);
 			top.getChildren().addAll(topBox, center);
 			
+			top.setAlignment(Pos.CENTER);
 			root.setTop(top);
 
 		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -126,8 +127,9 @@ public class Main extends Application {
 		centerContainer.getChildren().add(farmIDInput);
 		
 		Label dataTable=new Label("Date table");
-		dataTable.setMinSize(100, 200);
+		dataTable.setMinSize(500, 200);
 		dataTable.setAlignment(Pos.CENTER);
+		dataTable.setStyle("-fx-border-color: black;");
 		centerContainer.getChildren().add(dataTable);
 		
 		TextField filePath=new TextField("File path here.");
@@ -135,6 +137,7 @@ public class Main extends Application {
 		centerContainer.getChildren().add(filePath);
 		
 		centerContainer.setAlignment(Pos.CENTER);
+		centerContainer.setSpacing(10);
 		root.setCenter(centerContainer);
 		
 	}
@@ -159,7 +162,7 @@ public class Main extends Application {
 	    Button button = new Button("Enter");
 	    button.setPrefSize(100, 20);
 	    hbox.getChildren().addAll(label1, textField, button);
-
+	    hbox.setAlignment(Pos.CENTER);
 	    return hbox;
 	}
 }

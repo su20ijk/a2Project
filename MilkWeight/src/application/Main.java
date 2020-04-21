@@ -6,6 +6,7 @@ package application;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -115,6 +116,27 @@ public class Main extends Application {
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 	
+		VBox centerContainer=new VBox();
+		Label textOutputPrompt=new Label("Please enter your desired farm's ID below:");
+		textOutputPrompt.setMinSize(100, 65);
+		centerContainer.getChildren().add(textOutputPrompt);
+		
+		TextField farmIDInput=new TextField("Enter farm ID.");
+		farmIDInput.setMaxWidth(200);
+		centerContainer.getChildren().add(farmIDInput);
+		
+		Label dataTable=new Label("Date table");
+		dataTable.setMinSize(100, 200);
+		dataTable.setAlignment(Pos.CENTER);
+		centerContainer.getChildren().add(dataTable);
+		
+		TextField filePath=new TextField("File path here.");
+		filePath.setMaxWidth(100);
+		centerContainer.getChildren().add(filePath);
+		
+		centerContainer.setAlignment(Pos.CENTER);
+		root.setCenter(centerContainer);
+		
 	}
 
 	/**

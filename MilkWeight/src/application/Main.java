@@ -5,31 +5,31 @@ package application;
 
 import java.util.List;
 
+import Internal.Data;
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 /**
- * @author 72465
+ * @author Qikun Liu
  *
  */
 public class Main extends Application {
+		
+		
 	private List<String> args;
 
 	private static final int WINDOW_WIDTH = 1000;
@@ -38,7 +38,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-
+		
+		Data dataHolder = new Data();
+		
+		
 		// save args example
 		args = this.getParameters().getRaw();
 
@@ -69,8 +72,24 @@ public class Main extends Application {
 
 		// Main layout is Border Pane example (top,left,center,right,bottom)
 		BorderPane root = new BorderPane();
-		HBox topBox = this.addHBox();
+		HBox topBox = new HBox();
+	    topBox.setPadding(new Insets(15, 12, 15, 12));
+	    topBox.setSpacing(10);
+
+	    Label label1 = new Label("File Path:");
+	    TextField textField = new TextField ();
+	    textField.setPrefSize(500, 20);
+	    HBox hb = new HBox();
+
+	    Button button = new Button("Enter");
+	    button.setPrefSize(100, 20);
+	    
+	    topBox.getChildren().addAll(label1, textField, button);
+	    topBox.setAlignment(Pos.CENTER);
+	    
 		root.setTop(topBox);
+		
+		
 		VBox leftBox = new VBox();
 		 leftBox.setPadding(new Insets(15, 12, 15, 12));
 		 leftBox.setSpacing(10);
@@ -84,7 +103,7 @@ public class Main extends Application {
 		    leftBox.getChildren().addAll(buttonF, buttonM);
 		    leftBox.setAlignment(Pos.CENTER);
         
-        VBox rightBox = new VBox();
+         VBox rightBox = new VBox();
 		 rightBox.setPadding(new Insets(15, 12, 15, 12));
 		 rightBox.setSpacing(10);
 
@@ -150,20 +169,5 @@ public class Main extends Application {
 		// TODO Auto-generated method stub
 		launch(args);
 	}
-	public HBox addHBox() {
-	    HBox hbox = new HBox();
-	    hbox.setPadding(new Insets(15, 12, 15, 12));
-	    hbox.setSpacing(10);
-
-	    Label label1 = new Label("File Path:");
-	    TextField textField = new TextField ();
-	    textField.setPrefSize(500, 20);
-	    HBox hb = new HBox();
-
-	    Button button = new Button("Enter");
-	    button.setPrefSize(100, 20);
-	    hbox.getChildren().addAll(label1, textField, button);
-	    hbox.setAlignment(Pos.CENTER);
-	    return hbox;
-	}
+	
 }

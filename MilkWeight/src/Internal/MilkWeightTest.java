@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
  */
 class MilkWeightTest
   {
-    private Main main;
+    private Data main;
     
     @BeforeEach
     void setUp() throws Exception 
     {
-      main = new Main();
+      main = new Data();
     }
     
     @Test

@@ -38,7 +38,7 @@ import java.util.TreeMap;
  * @author lmulligan (2020)
  *
  */
-public class Main 
+public class Data 
 {
   // Main data structure, a Map of Farm IDs paired to a Map of years paired to
   // an array of FarmPerMonth objects
@@ -47,7 +47,7 @@ public class Main
   /**
    * Default no arg constructor of Main class
    */
-  public Main()
+  public Data()
   {
     farmList = new HashMap<String, Map<Integer, FarmPerMonth[]>>();
   }

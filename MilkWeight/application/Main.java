@@ -69,7 +69,23 @@ public class Main extends Application {
 
 		// Main layout is Border Pane example (top,left,center,right,bottom)
 		BorderPane root = new BorderPane();
-		HBox topBox = this.addHBox();
+		
+		HBox topBox = new HBox();
+	    topBox.setPadding(new Insets(15, 12, 15, 12));
+	    topBox.setSpacing(10);
+
+	    Label label1 = new Label("File Path:");
+	    TextField textField = new TextField ();
+	    textField.setPrefSize(500, 20);
+	    HBox hb = new HBox();
+
+	    Button button = new Button("Enter");
+	    button.setPrefSize(100, 20);
+	    topBox.getChildren().addAll(label1, textField, button);
+	    topBox.setAlignment(Pos.CENTER);
+		
+		
+		
 		root.setTop(topBox);
 		VBox leftBox = new VBox();
 		 leftBox.setPadding(new Insets(15, 12, 15, 12));
@@ -148,21 +164,5 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		launch(args);
-	}
-	public HBox addHBox() {
-	    HBox hbox = new HBox();
-	    hbox.setPadding(new Insets(15, 12, 15, 12));
-	    hbox.setSpacing(10);
-
-	    Label label1 = new Label("File Path:");
-	    TextField textField = new TextField ();
-	    textField.setPrefSize(500, 20);
-	    HBox hb = new HBox();
-
-	    Button button = new Button("Enter");
-	    button.setPrefSize(100, 20);
-	    hbox.getChildren().addAll(label1, textField, button);
-	    hbox.setAlignment(Pos.CENTER);
-	    return hbox;
 	}
 }

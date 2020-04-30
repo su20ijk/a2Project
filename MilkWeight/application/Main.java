@@ -26,7 +26,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
- * @author 72465
+ * @author Qikun, Xueshen
  *
  */
 public class Main extends Application {

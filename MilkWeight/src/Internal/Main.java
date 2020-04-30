@@ -322,22 +322,25 @@ public class Main
    * @param report
    * @return
    */
-  public double[] percentList(int[] report)
+  public double[] percentList(int[] report, int year)
   {
     double[] percents = new double[report.length];
     int weightTotal = 0;
     
-    // Iterate through report and calculate total weight
     for (int i = 0; i < report.length; i++)
     {
-      weightTotal += report[i];
-    }
-    
-    // Iterate through report and calculate and add percents to array
-    for (int j = 0; j < percents.length; j++)
-    {
-      percents[j] = 100 * ((double)report[j] / weightTotal);
+      //Iterate through all farms and get weight total for the ith month
+      Iterator<Entry<String, Map<Integer, FarmPerMonth[]>>> iter = farmList.entrySet().iterator();
+      while (iter.hasNext())
+      {
+        Entry<String, Map<Integer, FarmPerMonth[]>> pair = iter.next();
+        if (pair.getValue().get(year) != null && pair.getValue().get(year)[i] != null)
+          weightTotal += pair.getValue().get(year)[i].getWeightTotal();
+      }
+      // Calculate percent for the month
+      percents[i] = 100 * ((double)report[i] / weightTotal);
     }
     return percents;
   }
+  
 }

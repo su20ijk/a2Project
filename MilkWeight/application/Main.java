@@ -240,7 +240,7 @@ public class Main extends Application {
 	    				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
 	    				String output = "";
 	    				int[] total = database.farmReport(farmId, year);
-	    				double[] percent = database.percentList(total);
+	    				double[] percent = database.percentList(total, year);
 	    				for(int i=1; i<=12; i++) {
 	    					output = output+"Month "+i+":          Total Weight: "+total[i-1]+"          Percentage Weight: "+percent[i-1];
 	    					output = output+"\n";

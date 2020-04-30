@@ -50,7 +50,7 @@ class MilkWeightTest
       Map<String, Integer> yearReportSorted = main.sortAscendingWeight(yearReport);
       Map<String, Integer> dateRangeReport = main.dateRangeReport(2019, 1, 8, 3, 18);
       double[] percents = main.percentList(yearReport);
-      double[] percents2 = main.percentList(farmReport);
+      double[] percents2 = main.percentList(farmReport, 2019);
       System.out.println(yearReportSorted);
       System.out.println(dateRangeReport);
       for (int i = 0; i < percents2.length; i++)

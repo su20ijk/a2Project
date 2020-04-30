@@ -181,6 +181,12 @@ public class Main extends Application {
 	    		}
 	    		);
 	    
+	    buttonF.setOnAction(
+	    		e -> {
+	    			textOutputPrompt.setText("Please enter your desired farm id and year below:");
+    				IDInput.setPromptText("Enter format: <Farm Id>, <Year>");
+	    		}
+	    		);
 	    submitIDInput.setOnAction(
 	    		e -> {
 	    			if(textOutputPrompt.getText().equals("Please enter the initial date and final date below:")) {
@@ -193,6 +199,14 @@ public class Main extends Application {
 	    			}
 	    			else if(textOutputPrompt.getText().equals("Please enter year below:")) {
 	    				dataTable.setText(String.valueOf(database.yearReport(Integer.parseInt(IDInput.getText()))));
+	    			}
+	    			else if(textOutputPrompt.getText().equals("Please enter your desired farm id and year below:")) {
+	    				String farmId = Integer.parseInt(IDInput.getText().split(",")[0])+"";
+	    				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
+	    				String output = "";
+	    				int[] total = database.farmReport(farmId, year);
+	    				double[] percent = database.percentList(report)
+	    				dataTable.setText();
 	    			}
 	    		}
 	    		);

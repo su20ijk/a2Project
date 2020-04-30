@@ -1,4 +1,5 @@
 package Internal;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -291,7 +292,7 @@ public class Data
   /**
    * Creates an array of milk weight percentages(indiv. farm milk weight/total weight) 
    * for each farm in a given report, order of percents matches ordering in report,
-   * i.e. if ordering report changes the array will not match
+   * i.e. if ordering of the report changes the array will not match
    * @param report - the report to generate percentages for
    * @return an array of percentages as doubles
    */
@@ -312,6 +313,32 @@ public class Data
     for (int i = 0; i < percents.length; i++)
     {
       percents[i] = 100 * ((double)iter2.next().getValue() / weightTotal);
+    }
+    return percents;
+  }
+  
+  /**
+   * Creates an array of milk weight percentages(month milk weight/total year weight) 
+   * for each month in a given farmReport, order of percents matches ordering in report,
+   * i.e. if ordering of the report changes the array will not match
+   * @param report
+   * @return
+   */
+  public double[] percentList(int[] report)
+  {
+    double[] percents = new double[report.length];
+    int weightTotal = 0;
+    
+    // Iterate through report and calculate total weight
+    for (int i = 0; i < report.length; i++)
+    {
+      weightTotal += report[i];
+    }
+    
+    // Iterate through report and calculate and add percents to array
+    for (int j = 0; j < percents.length; j++)
+    {
+      percents[j] = 100 * ((double)report[j] / weightTotal);
     }
     return percents;
   }

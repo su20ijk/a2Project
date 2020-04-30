@@ -4,9 +4,13 @@
 package application;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import Internal.Data;
+import Internal.FarmPerMonth;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -184,7 +188,13 @@ public class Main extends Application {
 	    buttonF.setOnAction(
 	    		e -> {
 	    			textOutputPrompt.setText("Please enter your desired farm id and year below:");
-    				IDInput.setPromptText("Enter format: <Farm Id>, <Year>");
+    				IDInput.setPromptText("Enter format: <Farm Id>,<Year>");
+	    		}
+	    		);
+	    buttonM.setOnAction(
+	    		e -> {
+	    			textOutputPrompt.setText("Please enter your desired month and year below:");
+	    			IDInput.setPromptText("Enter format: <Month>,<Year>");
 	    		}
 	    		);
 	    submitIDInput.setOnAction(
@@ -195,19 +205,65 @@ public class Main extends Application {
 	    				int sDay=Integer.parseInt(IDInput.getText().split(",")[2]);
 	    				int eMonth=Integer.parseInt(IDInput.getText().split(",")[3]);
 	    				int eDay=Integer.parseInt(IDInput.getText().split(",")[4]);
-	    				dataTable.setText(String.valueOf(database.dateRangeReport(year, sMonth, sDay, eMonth, eDay)));
+	    				Map<String, Integer> maps = database.dateRangeReport(year, sMonth, sDay, eMonth, eDay);
+	    				double[] percent = database.percentList(maps);
+	    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+	    				int count=0;
+	    				String output = "";
+	    				while (iter.hasNext())
+	    			    {
+	    			      Entry<String, Integer> pair = iter.next();
+	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+	    				  output = output+"\n";
+	    				  count++;
+	    			}
+	    				dataTable.setText(output);
 	    			}
 	    			else if(textOutputPrompt.getText().equals("Please enter year below:")) {
-	    				dataTable.setText(String.valueOf(database.yearReport(Integer.parseInt(IDInput.getText()))));
+	    				
+	    				Map<String, Integer> maps = database.yearReport(Integer.parseInt(IDInput.getText()));
+	    				double[] percent = database.percentList(maps);
+	    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+	    				int count=0;
+	    				String output = "";
+	    				while (iter.hasNext())
+	    			    {
+	    			      Entry<String, Integer> pair = iter.next();
+	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+	    				  output = output+"\n";
+	    				  count++;
+	    			}
+	    				dataTable.setText(output);
 	    			}
 	    			else if(textOutputPrompt.getText().equals("Please enter your desired farm id and year below:")) {
 	    				String farmId = Integer.parseInt(IDInput.getText().split(",")[0])+"";
 	    				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
 	    				String output = "";
 	    				int[] total = database.farmReport(farmId, year);
-	    				double[] percent = database.percentList(report)
-	    				dataTable.setText();
+	    				double[] percent = database.percentList(total);
+	    				for(int i=1; i<=12; i++) {
+	    					output = output+"Month "+i+":          Total Weight: "+total[i-1]+"          Percentage Weight: "+percent[i-1];
+	    					output = output+"\n";
+	    				}
+	    				dataTable.setText(output);
 	    			}
+	    			else if(textOutputPrompt.getText().equals("Please enter your desired month and year below:")) {
+	    				int month = Integer.parseInt(IDInput.getText().split(",")[0]);
+	    				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
+	    				String output = "";
+	    				Map<String, Integer> maps= database.monthReport(year, month);
+	    				double[] percent = database.percentList(maps);
+	    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+	    				int count=0;
+	    				while (iter.hasNext())
+	    			    {
+	    			      Entry<String, Integer> pair = iter.next();
+	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+	    				  output = output+"\n";
+	    				  count++;
+	    			}
+	    				dataTable.setText(output);
+	    		}
 	    		}
 	    		);
 	}

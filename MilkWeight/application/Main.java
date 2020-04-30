@@ -22,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 /**
  * @author Qikun, Xueshen
  *
@@ -33,6 +32,7 @@ public class Main extends Application {
 	private static final int WINDOW_WIDTH = 1000;
 	private static final int WINDOW_HEIGHT = 600;
 	private static final String APP_TITLE = "Milk Weight";
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -138,9 +138,18 @@ public class Main extends Application {
 		textOutputPrompt.setMinSize(100, 65);
 		centerContainer.getChildren().add(textOutputPrompt);
 		
-		TextField farmIDInput=new TextField("Enter farm ID.");
-		farmIDInput.setMaxWidth(200);
-		centerContainer.getChildren().add(farmIDInput);
+		TextField IDInput=new TextField();
+		IDInput.setMinWidth(200);
+		IDInput.setPromptText("Enter farm ID.");
+		
+		Button submitIDInput=new Button("Submit");
+		submitIDInput.setPrefSize(150, 20);
+		
+		HBox IDPart=new HBox();
+		IDPart.getChildren().add(IDInput);
+		IDPart.getChildren().add(submitIDInput);
+		IDPart.setAlignment(Pos.CENTER);
+		centerContainer.getChildren().add(IDPart);
 		
 		Label dataTable=new Label("Date table");
 		dataTable.setMinSize(500, 200);
@@ -156,6 +165,37 @@ public class Main extends Application {
 		centerContainer.setSpacing(10);
 		root.setCenter(centerContainer);
 		
+		
+	    buttonA.setOnAction(
+	    		e -> {
+    				textOutputPrompt.setText("Please enter year below:");
+    				IDInput.setPromptText("Enter format: <Year>");
+	    		}
+	    		);
+	    
+
+	    buttonD.setOnAction(
+	    		e -> {
+	    				textOutputPrompt.setText("Please enter the initial date and final date below:");
+	    				IDInput.setPromptText("Enter format: <Year>,<Initial month>,<Inital day>,<Final month>,<Final day>");
+	    		}
+	    		);
+	    
+	    submitIDInput.setOnAction(
+	    		e -> {
+	    			if(textOutputPrompt.getText().equals("Please enter the initial date and final date below:")) {
+	    				int year=Integer.parseInt(IDInput.getText().split(",")[0]);
+	    				int sMonth=Integer.parseInt(IDInput.getText().split(",")[1]);
+	    				int sDay=Integer.parseInt(IDInput.getText().split(",")[2]);
+	    				int eMonth=Integer.parseInt(IDInput.getText().split(",")[3]);
+	    				int eDay=Integer.parseInt(IDInput.getText().split(",")[4]);
+	    				dataTable.setText(String.valueOf(database.dateRangeReport(year, sMonth, sDay, eMonth, eDay)));
+	    			}
+	    			else if(textOutputPrompt.getText().equals("Please enter year below:")) {
+	    				dataTable.setText(String.valueOf(database.yearReport(Integer.parseInt(IDInput.getText()))));
+	    			}
+	    		}
+	    		);
 	}
 
 	/**

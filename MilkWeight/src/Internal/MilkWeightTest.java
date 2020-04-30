@@ -1,4 +1,3 @@
-package Internal;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.util.Map;
@@ -49,8 +48,13 @@ class MilkWeightTest
       Map<String, Integer> yearReportSorted = main.sortAscendingWeight(yearReport);
       Map<String, Integer> dateRangeReport = main.dateRangeReport(2019, 1, 8, 3, 18);
       double[] percents = main.percentList(yearReport);
+      double[] percents2 = main.percentList(farmReport);
       System.out.println(yearReportSorted);
       System.out.println(dateRangeReport);
+      for (int i = 0; i < percents2.length; i++)
+      {
+        System.out.println(percents2[i]);
+      }
     }
 
   }

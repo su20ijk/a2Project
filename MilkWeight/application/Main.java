@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import Internal.*;
 /**
  * @author Qikun, Xueshen
  *
@@ -35,6 +36,8 @@ public class Main extends Application {
 	private static final int WINDOW_WIDTH = 1000;
 	private static final int WINDOW_HEIGHT = 600;
 	private static final String APP_TITLE = "Milk Weight";
+	
+	private Data data= new Data();
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -138,8 +141,9 @@ public class Main extends Application {
 		textOutputPrompt.setMinSize(100, 65);
 		centerContainer.getChildren().add(textOutputPrompt);
 		
-		TextField farmIDInput=new TextField("Enter farm ID.");
+		TextField farmIDInput=new TextField();
 		farmIDInput.setMaxWidth(200);
+		farmIDInput.setPromptText("Enter farm ID.");
 		centerContainer.getChildren().add(farmIDInput);
 		
 		Label dataTable=new Label("Date table");
@@ -156,6 +160,10 @@ public class Main extends Application {
 		centerContainer.setSpacing(10);
 		root.setCenter(centerContainer);
 		
+		
+	    buttonA.setOnAction(
+	    		e -> dataTable.setText(String.valueOf(data.yearReport(Integer.parseInt(farmIDInput.getText()))))
+	    		);
 	}
 
 	/**

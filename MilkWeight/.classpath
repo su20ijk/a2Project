@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="D:/usb/My folder/openjfx/javafx-sdk-11.0.2/lib/javafx.web.jar"/>
 	<classpathentry kind="lib" path="D:/usb/My folder/openjfx/javafx-sdk-11.0.2/lib/javafx-swt.jar"/>
 	<classpathentry kind="lib" path="D:/usb/My folder/openjfx/javafx-sdk-11.0.2/lib/src.zip"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

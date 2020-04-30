@@ -3,21 +3,19 @@
  */
 package application;
 
+import java.io.File;
 import java.util.List;
 
+import Internal.Data;
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,7 +39,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-
+		Data database = new Data();
 		// save args example
 		args = this.getParameters().getRaw();
 
@@ -81,8 +79,10 @@ public class Main extends Application {
 	    TextField textField = new TextField ();
 	    textField.setPrefSize(500, 20);
 	    HBox hb = new HBox();
-
 	    Button button = new Button("Enter");
+	    button.setOnAction(
+	    		e -> database.readFile(new File(textField.getText()))
+	    		);
 	    button.setPrefSize(100, 20);
 	    topBox.getChildren().addAll(label1, textField, button);
 	    topBox.setAlignment(Pos.CENTER);

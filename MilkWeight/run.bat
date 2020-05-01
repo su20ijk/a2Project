@@ -1,1 +1,1 @@
-java --module-path "C:\Users\ACER\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar
+java --module-path "D:\usb\My folder\openjfx\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml -jar executable.jar

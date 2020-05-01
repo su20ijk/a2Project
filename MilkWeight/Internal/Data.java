@@ -88,7 +88,7 @@ public class Data
     } 
     catch (IOException e) 
     {
-      e.printStackTrace();
+      throw new IllegalArgumentException(); 
     }
   }
   

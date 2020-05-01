@@ -35,8 +35,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private List<String> args;
 
-	private static final int WINDOW_WIDTH = 1200;
-	private static final int WINDOW_HEIGHT = 640;
+	private static final int WINDOW_WIDTH = 800;
+	private static final int WINDOW_HEIGHT = 666;
 	private static final String APP_TITLE = "Milk Weight";
 
 	@Override
@@ -131,6 +131,8 @@ public class Main extends Application {
 		HBox IDPart = new HBox();
 		IDPart.getChildren().add(IDInput);
 		IDPart.getChildren().add(submitIDInput);
+		IDPart.setPadding(new Insets(15, 12, 15, 12));
+		IDPart.setSpacing(10);
 		IDPart.setAlignment(Pos.CENTER);
 		centerContainer.getChildren().add(IDPart);
 
@@ -148,7 +150,7 @@ public class Main extends Application {
 		filePath.setPromptText("Please enter File path here. Format: <path>");
 		filePath.setMinWidth(300);
 		Button buttonFinalEnter = new Button("Save");
-	    button.setPrefSize(100, 20);
+	    buttonFinalEnter.setPrefSize(100, 20);
 		botBox.getChildren().addAll(labelOut, filePath, buttonFinalEnter);
 		botBox.setAlignment(Pos.CENTER);
 		centerContainer.getChildren().add(botBox);
@@ -159,13 +161,25 @@ public class Main extends Application {
 		root.setCenter(centerContainer);
 
 		button.setOnAction(e -> {
+			database.clearFile();
+			String filePaths = textField.getText();
 			status.setText("Status");
-			File readFile = new File(textField.getText());
-			if (readFile.exists()) {
-				database.readFile(readFile);
-				status.setText("\"" + textField.getText() + "\" is successfully imported.");
-			} else
-				status.setText("Failed to import \"" + textField.getText() + "\"");
+			String[] pathList = filePaths.split(",");
+			Boolean statusPrint = true;
+			for(int i=0; i<pathList.length; i++) {
+				File readFile = new File(pathList[i]);
+				if (readFile.exists()) {
+					database.readFile(readFile);
+				} else
+					statusPrint = false;
+			}
+			if(statusPrint) {
+				status.setText("All files are successfully imported.");
+			}
+			else {
+				status.setText("Failed to import some files.");
+			}
+ 			
 		});
 
 		buttonA.setOnAction(e -> {

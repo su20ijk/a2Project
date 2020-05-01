@@ -96,6 +96,12 @@ public class Data
     }
   }
   
+  
+  
+  public void clearFile()
+  {
+	  farmList = new HashMap<String, Map<Integer, FarmPerMonth[]>>();
+  }
   /**
    * Creates a report of all milk weights of a given farm for a given year by month
    * @param farmID - the farm to create a report for

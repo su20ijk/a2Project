@@ -115,16 +115,28 @@ public class Main extends Application {
 		top.getChildren().addAll(topBox, center);
 
 		top.setAlignment(Pos.CENTER);
-		root.setTop(top);
+		
+		Label status = new Label("Status");
+		status.setAlignment(Pos.CENTER);
+		status.setPrefSize(400, 50);
+		status.setStyle("-fx-border-color: black;");
+		VBox calculationPart = new VBox();
+		calculationPart.getChildren().add(top);
+		calculationPart.getChildren().add(status);
+		calculationPart.setAlignment(Pos.CENTER);
+		calculationPart.setSpacing(10);
+		
+		root.setTop(calculationPart);
 
 		VBox centerContainer = new VBox();
-		Label textOutputPrompt = new Label("Please enter your desired farm's ID below:");
+		Label textOutputPrompt = new Label("Please select one of the options above :");
 		textOutputPrompt.setMinSize(100, 30);
 		centerContainer.getChildren().add(textOutputPrompt);
 
 		TextField IDInput = new TextField();
 		IDInput.setMinWidth(500);
-		IDInput.setPromptText("Enter farm ID.");
+		IDInput.setPromptText("Please select one of the options above.");
+		IDInput.setAlignment(Pos.CENTER);
 
 		Button submitIDInput = new Button("Submit");
 		submitIDInput.setPrefSize(100, 20);
@@ -149,16 +161,7 @@ public class Main extends Application {
 		centerContainer.setAlignment(Pos.CENTER);
 		centerContainer.setSpacing(10);
 
-		Label status = new Label("Status");
-		status.setAlignment(Pos.CENTER);
-		status.setPrefSize(300, 100);
-		status.setStyle("-fx-border-color: black;");
-		HBox calculationPart = new HBox();
-		calculationPart.getChildren().add(centerContainer);
-		calculationPart.getChildren().add(status);
-		calculationPart.setAlignment(Pos.CENTER);
-		calculationPart.setSpacing(10);
-		root.setCenter(calculationPart);
+		root.setCenter(centerContainer);
 
 		button.setOnAction(e -> {
 			status.setText("Status");

@@ -67,6 +67,7 @@ public class Data
       br.readLine(); // Skip first line
       while ((line = br.readLine()) != null) 
       {
+
           // Separate Strings and convert necessary Strings to ints
           String[] data = line.split(",");        
           String[] date = data[0].split("-");
@@ -83,7 +84,7 @@ public class Data
           farmList.get(id).putIfAbsent(year, new FarmPerMonth[12]);
           if (farmList.get(id).get(year)[month-1] == null)
             farmList.get(id).get(year)[month-1] = new FarmPerMonth(id, month);
-          farmList.get(id).get(year)[month-1].addWeight(weight, day); 
+          farmList.get(id).get(year)[month-1].addWeight(weight, day);
       }
     } 
     catch (IOException e) 

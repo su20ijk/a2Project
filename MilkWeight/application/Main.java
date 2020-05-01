@@ -150,7 +150,7 @@ public class Main extends Application {
 		filePath.setPromptText("Please enter File path here. Format: <path>");
 		filePath.setMinWidth(300);
 		Button buttonFinalEnter = new Button("Save");
-	    buttonFinalEnter.setPrefSize(100, 20);
+		buttonFinalEnter.setPrefSize(100, 20);
 		botBox.getChildren().addAll(labelOut, filePath, buttonFinalEnter);
 		botBox.setAlignment(Pos.CENTER);
 		centerContainer.getChildren().add(botBox);
@@ -173,21 +173,24 @@ public class Main extends Application {
 			status.setText("Status");
 			String[] pathList = filePaths.split(",");
 			Boolean statusPrint = true;
-			for(int i=0; i<pathList.length; i++) {
+			for (int i = 0; i < pathList.length; i++) {
 				File readFile = new File(pathList[i]);
 				if (readFile.exists()) {
-					database.readFile(readFile);
+					try {						
+						database.readFile(readFile);
+					}catch(Exception e2) {
+						statusPrint=false;
+					}
 				} else
 					statusPrint = false;
 			}
-			if(statusPrint) {
+			if (statusPrint) {
 				status.setText("All files are successfully imported.");
 				buttonF.setDisable(false);
 				buttonM.setDisable(false);
 				buttonA.setDisable(false);
 				buttonD.setDisable(false);
-			}
-			else {
+			} else {
 				status.setText("Failed to import some files.");
 				buttonF.setDisable(true);
 				buttonM.setDisable(true);
@@ -196,7 +199,7 @@ public class Main extends Application {
 				submitIDInput.setDisable(true);
 				buttonFinalEnter.setDisable(true);
 			}
- 			
+
 		});
 
 		buttonA.setOnAction(e -> {
@@ -235,14 +238,14 @@ public class Main extends Application {
 
 			try {
 				File file = new File(filePath.getText());
-				boolean isValid=false;
+				boolean isValid = false;
 				String[] validOutputForm = new String[] { "txt", "csv", "json", "xml", "html" };
 				for (String outForm : validOutputForm)
 					if (filePath.getText().endsWith("." + outForm))
-						if(!filePath.getText().equals("." + outForm))
-							if(file.createNewFile())
-								isValid=true;
-				if(!isValid)
+						if (!filePath.getText().equals("." + outForm))
+							if (file.createNewFile())
+								isValid = true;
+				if (!isValid)
 					throw new IllegalArgumentException();
 
 				String lineOne = dataTable.getText().split("\n")[0];
@@ -251,18 +254,18 @@ public class Main extends Application {
 				String nameTwo = fragments[1].trim();
 				String nameThree = fragments[2].trim().split("          ")[1];
 				wroteOut = nameOne + "," + nameTwo + "," + nameThree + "\n";
-				if(filePath.getText().endsWith("html"))
-					wroteOut+="<br/>";
+				if (filePath.getText().endsWith("html"))
+					wroteOut += "<br/>";
 				String[] lines = dataTable.getText().split("\n");
 				for (int i = 0; i < lines.length; i++) {
 					String[] lineFrags = lines[i].split(":");
 					String valueOne = lineFrags[0].split(" ")[1];
 					String valueTwo = lineFrags[2].trim().split("          ")[0];
 					String valueThree = lineFrags[3].trim();
-					valueThree = valueThree.substring(0, valueThree.length()-1); 
+					valueThree = valueThree.substring(0, valueThree.length() - 1);
 					wroteOut = wroteOut + valueOne + "," + valueTwo + "," + valueThree + "\n";
-					if(filePath.getText().endsWith("html"))
-						wroteOut+="<br/>";
+					if (filePath.getText().endsWith("html"))
+						wroteOut += "<br/>";
 				}
 
 				FileWriter csvWriter = new FileWriter(filePath.getText());
@@ -284,82 +287,17 @@ public class Main extends Application {
 					int eMonth = Integer.parseInt(IDInput.getText().split(",")[3]);
 					int eDay = Integer.parseInt(IDInput.getText().split(",")[4]);
 
-				if (!database.dateRangeReport(year, sMonth, sDay, eMonth, eDay).containsValue(-1)) {
-					Map<String, Integer> maps = database.dateRangeReport(year, sMonth, sDay, eMonth, eDay);
-					double[] percent = database.percentList(maps);
-					Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
-					int count = 0;
-					String output = "";
-					while (iter.hasNext()) {
-						Entry<String, Integer> pair = iter.next();
-						double percentage = ((double)Math.round(percent[count]*100))/100; 
-	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()
-	    			      			+"          Percentage Weight: "+percentage+"%";
-						output = output + "\n";
-						count++;
-					}
-					dataTable.setText(output);
-					status.setText("Argument(s) is/are valid");
-					buttonFinalEnter.setDisable(false);
-					submitIDInput.setDisable(true);
-				} else {
-					status.setText("Argument(s) is/are invalid");
-					dataTable.setText("DataTable");
-					buttonFinalEnter.setDisable(true);
-				}
-			} else if (textOutputPrompt.getText().equals("Please enter year below:")) {
-				if (!database.yearReport(Integer.parseInt(IDInput.getText())).containsValue(-1)) {
-					Map<String, Integer> maps = database.yearReport(Integer.parseInt(IDInput.getText()));
-					double[] percent = database.percentList(maps);
-					Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
-					int count = 0;
-					String output = "";
-					while (iter.hasNext()) {
-						Entry<String, Integer> pair = iter.next();
-						double percentage = ((double)Math.round(percent[count]*100))/100; 
-	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()
-	    			      			+"          Percentage Weight: "+percentage+"%"; 
-						output = output + "\n";
-						count++;
-					}
-
-				} else if (textOutputPrompt.getText().equals("Please enter your desired farm id and year below:")) {
-					String farmId = Integer.parseInt(IDInput.getText().split(",")[0]) + "";
-					int year = Integer.parseInt(IDInput.getText().split(",")[1]);
-					for (int i : database.farmReport(farmId, year))
-						if (i == -1) {
-							status.setText("Argument(s) is/are invalid");
-							dataTable.setText("DataTable");
-							buttonFinalEnter.setDisable(true);
-							break;
-						}
-					if (!status.getText().equals("Argument(s) is/are invalid")) {
-						String output = "";
-						int[] total = database.farmReport(farmId, year);
-						double[] percent = database.percentList(total, year);
-						for (int i = 1; i <= 12; i++) {
-							output = output + "Month " + i + ":          Total Weight: " + total[i - 1]
-									+ "          Percentage Weight: " + percent[i - 1];
-							output = output + "\n";
-						}
-						dataTable.setText(output);
-						status.setText("Argument(s) is/are valid");
-						buttonFinalEnter.setDisable(false);
-						submitIDInput.setDisable(true);
-					}
-				} else if (textOutputPrompt.getText().equals("Please enter your desired month and year below:")) {
-					int month = Integer.parseInt(IDInput.getText().split(",")[0]);
-					int year = Integer.parseInt(IDInput.getText().split(",")[1]);
-					if (!database.monthReport(year, month).containsValue(-1)) {
-						String output = "";
-						Map<String, Integer> maps = database.monthReport(year, month);
+					if (!database.dateRangeReport(year, sMonth, sDay, eMonth, eDay).containsValue(-1)) {
+						Map<String, Integer> maps = database.dateRangeReport(year, sMonth, sDay, eMonth, eDay);
 						double[] percent = database.percentList(maps);
 						Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
 						int count = 0;
+						String output = "";
 						while (iter.hasNext()) {
 							Entry<String, Integer> pair = iter.next();
+							double percentage = ((double) Math.round(percent[count] * 100)) / 100;
 							output = output + "Farm " + pair.getKey() + ":          Total Weight: " + pair.getValue()
-									+ "          Percentage Weight: " + percent[count];
+									+ "          Percentage Weight: " + percentage + "%";
 							output = output + "\n";
 							count++;
 						}
@@ -372,50 +310,100 @@ public class Main extends Application {
 						dataTable.setText("DataTable");
 						buttonFinalEnter.setDisable(true);
 					}
-				if (!status.getText().equals("Argument(s) is/are invalid")) {
-					String output = "";
-					int[] total = database.farmReport(farmId, year);
-					double[] percent = database.percentList(total, year);
-					for (int i = 1; i <= 12; i++) {
-						double percentage = ((double)Math.round(percent[i-1]*100))/100; 
-    					output = output+"Month "+i+":          Total Weight: "+total[i-1]
-    							+"          Percentage Weight: "+percentage+"%"; 
-						output = output + "\n";
+				} else if (textOutputPrompt.getText().equals("Please enter year below:")) {
+					if (!database.yearReport(Integer.parseInt(IDInput.getText())).containsValue(-1)) {
+						Map<String, Integer> maps = database.yearReport(Integer.parseInt(IDInput.getText()));
+						double[] percent = database.percentList(maps);
+						Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+						int count = 0;
+						String output = "";
+						while (iter.hasNext()) {
+							Entry<String, Integer> pair = iter.next();
+							double percentage = ((double) Math.round(percent[count] * 100)) / 100;
+							output = output + "Farm " + pair.getKey() + ":          Total Weight: " + pair.getValue()
+									+ "          Percentage Weight: " + percentage + "%";
+							output = output + "\n";
+							count++;
+						}
+
+					} else if (textOutputPrompt.getText().equals("Please enter your desired farm id and year below:")) {
+						String farmId = Integer.parseInt(IDInput.getText().split(",")[0]) + "";
+						int year = Integer.parseInt(IDInput.getText().split(",")[1]);
+						for (int i : database.farmReport(farmId, year))
+							if (i == -1) {
+								status.setText("Argument(s) is/are invalid");
+								dataTable.setText("DataTable");
+								buttonFinalEnter.setDisable(true);
+								break;
+							}
+						if (!status.getText().equals("Argument(s) is/are invalid")) {
+							String output = "";
+							int[] total = database.farmReport(farmId, year);
+							double[] percent = database.percentList(total, year);
+							for (int i = 1; i <= 12; i++) {
+								output = output + "Month " + i + ":          Total Weight: " + total[i - 1]
+										+ "          Percentage Weight: " + percent[i - 1];
+								output = output + "\n";
+							}
+							dataTable.setText(output);
+							status.setText("Argument(s) is/are valid");
+							buttonFinalEnter.setDisable(false);
+							submitIDInput.setDisable(true);
+						}
+					} else if (textOutputPrompt.getText().equals("Please enter your desired month and year below:")) {
+						int month = Integer.parseInt(IDInput.getText().split(",")[0]);
+						int year = Integer.parseInt(IDInput.getText().split(",")[1]);
+						if (!database.monthReport(year, month).containsValue(-1)) {
+							String output = "";
+							Map<String, Integer> maps = database.monthReport(year, month);
+							double[] percent = database.percentList(maps);
+							Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+							int count = 0;
+							while (iter.hasNext()) {
+								Entry<String, Integer> pair = iter.next();
+								output = output + "Farm " + pair.getKey() + ":          Total Weight: "
+										+ pair.getValue() + "          Percentage Weight: " + percent[count];
+								output = output + "\n";
+								count++;
+							}
+							dataTable.setText(output);
+							status.setText("Argument(s) is/are valid");
+							buttonFinalEnter.setDisable(false);
+							submitIDInput.setDisable(true);
+						} else {
+							status.setText("Argument(s) is/are invalid");
+							dataTable.setText("DataTable");
+							buttonFinalEnter.setDisable(true);
+						}
+					} else if (textOutputPrompt.getText().equals("Please enter your desired month and year below:")) {
+						int month = Integer.parseInt(IDInput.getText().split(",")[0]);
+						int year = Integer.parseInt(IDInput.getText().split(",")[1]);
+						if (!database.monthReport(year, month).containsValue(-1)) {
+							String output = "";
+							Map<String, Integer> maps = database.monthReport(year, month);
+							double[] percent = database.percentList(maps);
+							Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+							int count = 0;
+							while (iter.hasNext()) {
+								Entry<String, Integer> pair = iter.next();
+								double percentage = ((double) Math.round(percent[count] * 100)) / 100;
+								output = output + "Farm " + pair.getKey() + ":          Total Weight: "
+										+ pair.getValue() + "          Percentage Weight: " + percentage + "%";
+								output = output + "\n";
+								count++;
+							}
+							dataTable.setText(output);
+							status.setText("Argument(s) is/are valid");
+							buttonFinalEnter.setDisable(false);
+							submitIDInput.setDisable(true);
+						} else {
+							status.setText("Argument(s) is/are invalid");
+							dataTable.setText("DataTable");
+							buttonFinalEnter.setDisable(true);
+						}
 					}
-					dataTable.setText(output);
-					status.setText("Argument(s) is/are valid");
-					buttonFinalEnter.setDisable(false);
-					submitIDInput.setDisable(true);
 				}
-			} else if (textOutputPrompt.getText().equals("Please enter your desired month and year below:")) {
-				int month = Integer.parseInt(IDInput.getText().split(",")[0]);
-				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
-				if (!database.monthReport(year, month).containsValue(-1)) {
-					String output = "";
-					Map<String, Integer> maps = database.monthReport(year, month);
-					double[] percent = database.percentList(maps);
-					Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
-					int count = 0;
-					while (iter.hasNext()) {
-						Entry<String, Integer> pair = iter.next();
-						 double percentage = ((double)Math.round(percent[count]*100))/100; 
-	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()
-	    			      			+"          Percentage Weight: "+percentage+"%"; 
-						output = output + "\n";
-						count++;
-					}
-					dataTable.setText(output);
-					status.setText("Argument(s) is/are valid");
-					buttonFinalEnter.setDisable(false);
-					submitIDInput.setDisable(true);
-				} else {
-					status.setText("Argument(s) is/are invalid");
-					dataTable.setText("DataTable");
-					buttonFinalEnter.setDisable(true);
-				}
-			}
-			}
-			catch(Exception e2) {
+			} catch (Exception e2) {
 				status.setText("Argument(s) is/are invalid");
 				dataTable.setText("DataTable");
 				buttonFinalEnter.setDisable(true);

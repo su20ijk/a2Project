@@ -46,24 +46,6 @@ public class Main extends Application {
 		// save args example
 		args = this.getParameters().getRaw();
 
-		/*
-		 * // Create a vertical box with Hello labels for each args VBox vbox = new
-		 * VBox();
-		 * 
-		 * // Creates a canvas that can draw shapes and text Canvas canvas = new
-		 * Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); GraphicsContext gc =
-		 * canvas.getGraphicsContext2D(); // Write some text // Text is filled with the
-		 * fill color gc.setFill(Color.GREEN); gc.setFont(new Font(30));
-		 * gc.fillText("Hello World!", 70, 170); // Draw a line // Lines use the stroke
-		 * color gc.setStroke(Color.BLUE); gc.setLineWidth(2); gc.strokeLine(40, 100,
-		 * 250, 50); // Draw a few circles gc.setFill(Color.BLACK); // The circles draw
-		 * from the top left, so to center them, subtract the radius from each
-		 * coordinate gc.fillOval(40-15, 100-15, 30, 30); gc.setFill(Color.RED);
-		 * gc.fillOval(250-15, 50-15, 30, 30);
-		 * 
-		 * vbox.getChildren().add(canvas);
-		 */
-
 		// Main layout is Border Pane example (top,left,center,right,bottom)
 		BorderPane root = new BorderPane();
 
@@ -199,41 +181,6 @@ public class Main extends Application {
 			textOutputPrompt.setText("Please enter the initial date and final date below:");
 			IDInput.setPromptText("Format: <Year>,<Initial month>,<Inital day>,<Final month>,<Final day>");
 		});
-
-		submitIDInput.setOnAction(e -> {
-			status.setText("Status");
-			if (textOutputPrompt.getText().equals("Please enter the initial date and final date below:")) {
-				int year = Integer.parseInt(IDInput.getText().split(",")[0]);
-				int sMonth = Integer.parseInt(IDInput.getText().split(",")[1]);
-				int sDay = Integer.parseInt(IDInput.getText().split(",")[2]);
-				int eMonth = Integer.parseInt(IDInput.getText().split(",")[3]);
-				int eDay = Integer.parseInt(IDInput.getText().split(",")[4]);
-				if (!database.dateRangeReport(year, sMonth, sDay, eMonth, eDay).containsValue(-1)) {
-					dataTable.setText(String.valueOf(database.dateRangeReport(year, sMonth, sDay, eMonth, eDay)));
-					status.setText("Argument(s) is/are valid");
-				} else {
-					status.setText("Argument(s) is/are invalid");
-					dataTable.setText("DataTable");
-				}
-			} else if (textOutputPrompt.getText().equals("Please enter year below:")) {
-				if (!database.yearReport(Integer.parseInt(IDInput.getText())).containsValue(-1)) {
-					dataTable.setText(String.valueOf(database.yearReport(Integer.parseInt(IDInput.getText()))));
-					status.setText("Argument(s) is/are valid");
-				} else {
-					status.setText("Argument(s) is/are invalid");
-					dataTable.setText("DataTable");
-				}
-			}
-		});
-		
-
-	    buttonD.setOnAction(
-	    		e -> {
-	    				textOutputPrompt.setText("Please enter the initial date and final date below:");
-	    				IDInput.setPromptText("Enter format: <Year>,<Initial month>,<Inital day>,<Final month>,<Final day>");
-	    		}
-	    		);
-	    
 	    buttonF.setOnAction(
 	    		e -> {
 	    			textOutputPrompt.setText("Please enter your desired farm id and year below:");
@@ -285,37 +232,56 @@ public class Main extends Application {
 	    				int sDay=Integer.parseInt(IDInput.getText().split(",")[2]);
 	    				int eMonth=Integer.parseInt(IDInput.getText().split(",")[3]);
 	    				int eDay=Integer.parseInt(IDInput.getText().split(",")[4]);
-	    				Map<String, Integer> maps = database.dateRangeReport(year, sMonth, sDay, eMonth, eDay);
-	    				double[] percent = database.percentList(maps);
-	    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
-	    				int count=0;
-	    				String output = "";
-	    				while (iter.hasNext())
-	    			    {
-	    			      Entry<String, Integer> pair = iter.next();
-	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
-	    				  output = output+"\n";
-	    				  count++;
-	    			}
-	    				dataTable.setText(output);
+	    				
+	    				
+	    				if (!database.dateRangeReport(year, sMonth, sDay, eMonth, eDay).containsValue(-1)) {
+	    					Map<String, Integer> maps = database.dateRangeReport(year, sMonth, sDay, eMonth, eDay);
+		    				double[] percent = database.percentList(maps);
+		    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+		    				int count=0;
+		    				String output = "";
+		    				while (iter.hasNext())
+		    			    {
+		    			      Entry<String, Integer> pair = iter.next();
+		    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+		    				  output = output+"\n";
+		    				  count++;
+		    			}
+		    				dataTable.setText(output);
+	    					status.setText("Argument(s) is/are valid");
+	    				} else {
+	    					status.setText("Argument(s) is/are invalid");
+	    					dataTable.setText("DataTable");
+	    				}
 	    			}
 	    			else if(textOutputPrompt.getText().equals("Please enter year below:")) {
-	    				
-	    				Map<String, Integer> maps = database.yearReport(Integer.parseInt(IDInput.getText()));
-	    				double[] percent = database.percentList(maps);
-	    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
-	    				int count=0;
-	    				String output = "";
-	    				while (iter.hasNext())
-	    			    {
-	    			      Entry<String, Integer> pair = iter.next();
-	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
-	    				  output = output+"\n";
-	    				  count++;
-	    			}
-	    				dataTable.setText(output);
+	    				if (!database.yearReport(Integer.parseInt(IDInput.getText())).containsValue(-1)) {
+	    					Map<String, Integer> maps = database.yearReport(Integer.parseInt(IDInput.getText()));
+		    				double[] percent = database.percentList(maps);
+		    				Iterator<Entry<String, Integer>> iter = maps.entrySet().iterator();
+		    				int count=0;
+		    				String output = "";
+		    				while (iter.hasNext())
+		    			    {
+		    			      Entry<String, Integer> pair = iter.next();
+		    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+		    				  output = output+"\n";
+		    				  count++;
+		    			}
+		    				dataTable.setText(output);
+	    					status.setText("Argument(s) is/are valid");
+	    				} else {
+	    					status.setText("Argument(s) is/are invalid");
+	    					dataTable.setText("DataTable");
+	    				}
+
 	    			}
 	    			else if(textOutputPrompt.getText().equals("Please enter your desired farm id and year below:")) {
+	    				
+	    				
+	    			//status
+	    				
+	    				
 	    				String farmId = Integer.parseInt(IDInput.getText().split(",")[0])+"";
 	    				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
 	    				String output = "";
@@ -328,6 +294,10 @@ public class Main extends Application {
 	    				dataTable.setText(output);
 	    			}
 	    			else if(textOutputPrompt.getText().equals("Please enter your desired month and year below:")) {
+	    				
+	    				
+	    				//status
+	    				
 	    				int month = Integer.parseInt(IDInput.getText().split(",")[0]);
 	    				int year = Integer.parseInt(IDInput.getText().split(",")[1]);
 	    				String output = "";

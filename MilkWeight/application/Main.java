@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 /**
  * @author Qikun, Xueshen
  *
@@ -29,8 +30,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private List<String> args;
 
-	private static final int WINDOW_WIDTH = 1000;
-	private static final int WINDOW_HEIGHT = 600;
+	private static final int WINDOW_WIDTH = 1200;
+	private static final int WINDOW_HEIGHT = 640;
 	private static final String APP_TITLE = "Milk Weight";
 
 	@Override
@@ -40,162 +41,182 @@ public class Main extends Application {
 		// save args example
 		args = this.getParameters().getRaw();
 
-		// Create a vertical box with Hello labels for each args
-		VBox vbox = new VBox();
-		
-		// Creates a canvas that can draw shapes and text
-		Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		// Write some text
-		// Text is filled with the fill color
-		gc.setFill(Color.GREEN);
-		gc.setFont(new Font(30));
-		gc.fillText("Hello World!", 70, 170);
-		// Draw a line
-		// Lines use the stroke color
-		gc.setStroke(Color.BLUE);
-		gc.setLineWidth(2);
-		gc.strokeLine(40, 100, 250, 50);
-		// Draw a few circles
-		gc.setFill(Color.BLACK);
-		// The circles draw from the top left, so to center them, subtract the radius from each coordinate
-		gc.fillOval(40-15, 100-15, 30, 30);
-		gc.setFill(Color.RED);
-		gc.fillOval(250-15, 50-15, 30, 30);
-
-		vbox.getChildren().add(canvas);
+		/*
+		 * // Create a vertical box with Hello labels for each args VBox vbox = new
+		 * VBox();
+		 * 
+		 * // Creates a canvas that can draw shapes and text Canvas canvas = new
+		 * Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); GraphicsContext gc =
+		 * canvas.getGraphicsContext2D(); // Write some text // Text is filled with the
+		 * fill color gc.setFill(Color.GREEN); gc.setFont(new Font(30));
+		 * gc.fillText("Hello World!", 70, 170); // Draw a line // Lines use the stroke
+		 * color gc.setStroke(Color.BLUE); gc.setLineWidth(2); gc.strokeLine(40, 100,
+		 * 250, 50); // Draw a few circles gc.setFill(Color.BLACK); // The circles draw
+		 * from the top left, so to center them, subtract the radius from each
+		 * coordinate gc.fillOval(40-15, 100-15, 30, 30); gc.setFill(Color.RED);
+		 * gc.fillOval(250-15, 50-15, 30, 30);
+		 * 
+		 * vbox.getChildren().add(canvas);
+		 */
 
 		// Main layout is Border Pane example (top,left,center,right,bottom)
 		BorderPane root = new BorderPane();
-		
+
 		HBox topBox = new HBox();
-	    topBox.setPadding(new Insets(15, 12, 15, 12));
-	    topBox.setSpacing(10);
+		topBox.setPadding(new Insets(15, 12, 15, 12));
+		topBox.setSpacing(10);
 
-	    Label label1 = new Label("File Path:");
-	    TextField textField = new TextField ();
-	    textField.setPrefSize(500, 20);
-	    HBox hb = new HBox();
-	    Button button = new Button("Enter");
-	    button.setOnAction(
-	    		e -> database.readFile(new File(textField.getText()))
-	    		);
-	    button.setPrefSize(100, 20);
-	    topBox.getChildren().addAll(label1, textField, button);
-	    topBox.setAlignment(Pos.CENTER);
-		
-		
-		
-		root.setTop(topBox);
+		Label label1 = new Label("File Path:");
+		TextField textField = new TextField();
+		textField.setPrefSize(400, 20);
+		textField.setPromptText("Please enter File path here. Format: <path>");
+
+		Button button = new Button("Enter");
+
+		button.setPrefSize(100, 20);
+		topBox.getChildren().addAll(label1, textField, button);
+		topBox.setAlignment(Pos.CENTER);
+
+		// root.setTop(status);
+
 		VBox leftBox = new VBox();
-		 leftBox.setPadding(new Insets(15, 12, 15, 12));
-		 leftBox.setSpacing(10);
+		leftBox.setPadding(new Insets(15, 12, 15, 12));
+		leftBox.setSpacing(10);
 
-		    Button buttonF = new Button("Farm Report");
-		    buttonF.setPrefSize(150, 20);
-		    
-		    Button buttonM = new Button("Monthly Report");
-		    buttonM.setPrefSize(150, 20);
-		    
-		    leftBox.getChildren().addAll(buttonF, buttonM);
-		    leftBox.setAlignment(Pos.CENTER);
-        
-        VBox rightBox = new VBox();
-		 rightBox.setPadding(new Insets(15, 12, 15, 12));
-		 rightBox.setSpacing(10);
+		Button buttonF = new Button("Farm Report");
+		buttonF.setPrefSize(150, 20);
 
-		    Button buttonA = new Button("Annual Report");
-		    buttonA.setPrefSize(150, 20);
-		    
-		    Button buttonD = new Button("Date Range Report");
-		    buttonD.setPrefSize(150, 20);
-		    
-		    rightBox.getChildren().addAll(buttonA, buttonD);
-		    rightBox.setAlignment(Pos.CENTER);
-		    HBox center = new HBox();
-		    center.setPadding(new Insets(15, 12, 15, 12));
-		    center.setSpacing(10);
-		    center.getChildren().addAll(leftBox, rightBox);
-		    center.setAlignment(Pos.CENTER);
-		    VBox top = new VBox();
-		    top.setPadding(new Insets(15, 12, 15, 12));
-			top.setSpacing(10);
-			top.getChildren().addAll(topBox, center);
-			
-			top.setAlignment(Pos.CENTER);
-			root.setTop(top);
+		Button buttonM = new Button("Monthly Report");
+		buttonM.setPrefSize(150, 20);
 
-		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+		leftBox.getChildren().addAll(buttonF, buttonM);
+		leftBox.setAlignment(Pos.CENTER);
 
-		
-		// Add the stuff and set the primary stage
-		primaryStage.setTitle(APP_TITLE);
-		primaryStage.setScene(mainScene);
-		primaryStage.show();
-	
-		VBox centerContainer=new VBox();
-		Label textOutputPrompt=new Label("Please enter your desired farm's ID below:");
-		textOutputPrompt.setMinSize(100, 65);
+		VBox rightBox = new VBox();
+		rightBox.setPadding(new Insets(15, 12, 15, 12));
+		rightBox.setSpacing(10);
+
+		Button buttonA = new Button("Annual Report");
+		buttonA.setPrefSize(150, 20);
+
+		Button buttonD = new Button("Date Range Report");
+		buttonD.setPrefSize(150, 20);
+
+		rightBox.getChildren().addAll(buttonA, buttonD);
+		rightBox.setAlignment(Pos.CENTER);
+		HBox center = new HBox();
+		center.setPadding(new Insets(15, 12, 15, 12));
+		center.setSpacing(10);
+		center.getChildren().addAll(leftBox, rightBox);
+		center.setAlignment(Pos.CENTER);
+		VBox top = new VBox();
+		top.setPadding(new Insets(15, 12, 15, 12));
+		top.setSpacing(10);
+		top.getChildren().addAll(topBox, center);
+
+		top.setAlignment(Pos.CENTER);
+		root.setTop(top);
+
+		VBox centerContainer = new VBox();
+		Label textOutputPrompt = new Label("Please enter your desired farm's ID below:");
+		textOutputPrompt.setMinSize(100, 30);
 		centerContainer.getChildren().add(textOutputPrompt);
-		
-		TextField IDInput=new TextField();
-		IDInput.setMinWidth(200);
+
+		TextField IDInput = new TextField();
+		IDInput.setMinWidth(500);
 		IDInput.setPromptText("Enter farm ID.");
-		
-		Button submitIDInput=new Button("Submit");
-		submitIDInput.setPrefSize(150, 20);
-		
-		HBox IDPart=new HBox();
+
+		Button submitIDInput = new Button("Submit");
+		submitIDInput.setPrefSize(100, 20);
+
+		HBox IDPart = new HBox();
 		IDPart.getChildren().add(IDInput);
 		IDPart.getChildren().add(submitIDInput);
 		IDPart.setAlignment(Pos.CENTER);
 		centerContainer.getChildren().add(IDPart);
-		
-		Label dataTable=new Label("Date table");
-		dataTable.setMinSize(500, 200);
+
+		Label dataTable = new Label("DateTable");
+		dataTable.setMinSize(420, 200);
 		dataTable.setAlignment(Pos.CENTER);
 		dataTable.setStyle("-fx-border-color: black;");
 		centerContainer.getChildren().add(dataTable);
-		
-		TextField filePath=new TextField("File path here.");
-		filePath.setMaxWidth(100);
+
+		TextField filePath = new TextField();
+		filePath.setMaxWidth(300);
+		filePath.setPromptText("Please enter File path here. Format: <path>");
 		centerContainer.getChildren().add(filePath);
-		
+
 		centerContainer.setAlignment(Pos.CENTER);
 		centerContainer.setSpacing(10);
-		root.setCenter(centerContainer);
-		
-		
-	    buttonA.setOnAction(
-	    		e -> {
-    				textOutputPrompt.setText("Please enter year below:");
-    				IDInput.setPromptText("Enter format: <Year>");
-	    		}
-	    		);
-	    
 
-	    buttonD.setOnAction(
-	    		e -> {
-	    				textOutputPrompt.setText("Please enter the initial date and final date below:");
-	    				IDInput.setPromptText("Enter format: <Year>,<Initial month>,<Inital day>,<Final month>,<Final day>");
-	    		}
-	    		);
-	    
-	    submitIDInput.setOnAction(
-	    		e -> {
-	    			if(textOutputPrompt.getText().equals("Please enter the initial date and final date below:")) {
-	    				int year=Integer.parseInt(IDInput.getText().split(",")[0]);
-	    				int sMonth=Integer.parseInt(IDInput.getText().split(",")[1]);
-	    				int sDay=Integer.parseInt(IDInput.getText().split(",")[2]);
-	    				int eMonth=Integer.parseInt(IDInput.getText().split(",")[3]);
-	    				int eDay=Integer.parseInt(IDInput.getText().split(",")[4]);
-	    				dataTable.setText(String.valueOf(database.dateRangeReport(year, sMonth, sDay, eMonth, eDay)));
-	    			}
-	    			else if(textOutputPrompt.getText().equals("Please enter year below:")) {
-	    				dataTable.setText(String.valueOf(database.yearReport(Integer.parseInt(IDInput.getText()))));
-	    			}
-	    		}
-	    		);
+		Label status = new Label("Status");
+		status.setAlignment(Pos.CENTER);
+		status.setPrefSize(300, 100);
+		status.setStyle("-fx-border-color: black;");
+		HBox calculationPart = new HBox();
+		calculationPart.getChildren().add(centerContainer);
+		calculationPart.getChildren().add(status);
+		calculationPart.setAlignment(Pos.CENTER);
+		calculationPart.setSpacing(10);
+		root.setCenter(calculationPart);
+
+		button.setOnAction(e -> {
+			status.setText("Status");
+			File readFile = new File(textField.getText());
+			if (readFile.exists()) {
+				database.readFile(readFile);
+				status.setText("\"" + textField.getText() + "\" is successfully imported.");
+			} else
+				status.setText("Failed to import \"" + textField.getText() + "\"");
+		});
+
+		buttonA.setOnAction(e -> {
+			IDInput.setText("");
+			status.setText("Status");
+			textOutputPrompt.setText("Please enter year below:");
+			IDInput.setPromptText("Format: <Year>");
+		});
+
+		buttonD.setOnAction(e -> {
+			IDInput.setText("");
+			status.setText("Status");
+			textOutputPrompt.setText("Please enter the initial date and final date below:");
+			IDInput.setPromptText("Format: <Year>,<Initial month>,<Inital day>,<Final month>,<Final day>");
+		});
+
+		submitIDInput.setOnAction(e -> {
+			status.setText("Status");
+			if (textOutputPrompt.getText().equals("Please enter the initial date and final date below:")) {
+				int year = Integer.parseInt(IDInput.getText().split(",")[0]);
+				int sMonth = Integer.parseInt(IDInput.getText().split(",")[1]);
+				int sDay = Integer.parseInt(IDInput.getText().split(",")[2]);
+				int eMonth = Integer.parseInt(IDInput.getText().split(",")[3]);
+				int eDay = Integer.parseInt(IDInput.getText().split(",")[4]);
+				if (!database.dateRangeReport(year, sMonth, sDay, eMonth, eDay).containsValue(-1)) {
+					dataTable.setText(String.valueOf(database.dateRangeReport(year, sMonth, sDay, eMonth, eDay)));
+					status.setText("Argument(s) is/are valid");
+				} else {
+					status.setText("Argument(s) is/are invalid");
+					dataTable.setText("DataTable");
+				}
+			} else if (textOutputPrompt.getText().equals("Please enter year below:")) {
+				if (!database.yearReport(Integer.parseInt(IDInput.getText())).containsValue(-1)) {
+					dataTable.setText(String.valueOf(database.yearReport(Integer.parseInt(IDInput.getText()))));
+					status.setText("Argument(s) is/are valid");
+				} else {
+					status.setText("Argument(s) is/are invalid");
+					dataTable.setText("DataTable");
+				}
+			}
+		});
+		
+
+		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+		// Add the stuff and set the primary stage
+		primaryStage.setTitle(APP_TITLE);
+		primaryStage.setScene(mainScene);
+		primaryStage.show();
 	}
 
 	/**

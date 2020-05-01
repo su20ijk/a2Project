@@ -224,6 +224,7 @@ public class Main extends Application {
 	    					String valueOne = lineFrags[0].split(" ")[1];
 	    					String valueTwo = lineFrags[2].trim().split("          ")[0];
 	    					String valueThree = lineFrags[3].trim();
+	    					valueThree = valueThree.substring(0, valueThree.length()-1);
 	    					wroteOut = wroteOut+valueOne+","+valueTwo+","+valueThree+"\n";
 	    				}
 	    				try {
@@ -257,7 +258,8 @@ public class Main extends Application {
 		    				while (iter.hasNext())
 		    			    {
 		    			      Entry<String, Integer> pair = iter.next();
-		    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+		    			      double percentage = ((double)Math.round(percent[count]*100))/100;
+		    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percentage+"%";
 		    				  output = output+"\n";
 		    				  count++;
 		    			}
@@ -278,7 +280,8 @@ public class Main extends Application {
 		    				while (iter.hasNext())
 		    			    {
 		    			      Entry<String, Integer> pair = iter.next();
-		    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+		    			      double percentage = ((double)Math.round(percent[count]*100))/100;
+		    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percentage+"%";
 		    				  output = output+"\n";
 		    				  count++;
 		    			}
@@ -302,7 +305,9 @@ public class Main extends Application {
 	    				int[] total = database.farmReport(farmId, year);
 	    				double[] percent = database.percentList(total, year);
 	    				for(int i=1; i<=12; i++) {
-	    					output = output+"Month "+i+":          Total Weight: "+total[i-1]+"          Percentage Weight: "+percent[i-1];
+
+		    			      double percentage = ((double)Math.round(percent[i-1]*100))/100;
+	    					output = output+"Month "+i+":          Total Weight: "+total[i-1]+"          Percentage Weight: "+percentage+"%";
 	    					output = output+"\n";
 	    				}
 	    				dataTable.setText(output);
@@ -322,7 +327,8 @@ public class Main extends Application {
 	    				while (iter.hasNext())
 	    			    {
 	    			      Entry<String, Integer> pair = iter.next();
-	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percent[count];
+	    			      double percentage = ((double)Math.round(percent[count]*100))/100;
+	    			      output = output+"Farm "+pair.getKey()+":          Total Weight: "+pair.getValue()+"          Percentage Weight: "+percentage+"%";
 	    				  output = output+"\n";
 	    				  count++;
 	    			}

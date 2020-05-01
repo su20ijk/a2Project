@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,7 +59,7 @@ public class Data
    * through the file and reading each line
    * @param file - the file containing the data to be added
    */
-  public void readFile(File file)
+  public void readFile(File file) throws NumberFormatException
   {
     String line = "";
     try (BufferedReader br = new BufferedReader(new FileReader(file))) 
@@ -66,14 +67,14 @@ public class Data
       br.readLine(); // Skip first line
       while ((line = br.readLine()) != null) 
       {
-        try
-        {
           // Separate Strings and convert necessary Strings to ints
           String[] data = line.split(",");        
           String[] date = data[0].split("-");
           int year = Integer.parseInt(date[0]);
           int month = Integer.parseInt(date[1]);
           int day = Integer.parseInt(date[2]);    
+          if (!data[1].substring(0,5).equals("Farms "))
+            throw new NumberFormatException();
           String id = data[1].substring(5);
           int weight  = Integer.parseInt(data[2].trim());
           
@@ -82,12 +83,7 @@ public class Data
           farmList.get(id).putIfAbsent(year, new FarmPerMonth[12]);
           if (farmList.get(id).get(year)[month-1] == null)
             farmList.get(id).get(year)[month-1] = new FarmPerMonth(id, month);
-          farmList.get(id).get(year)[month-1].addWeight(weight, day);
-        } 
-        catch (NumberFormatException e)
-        {
-          e.printStackTrace();
-        }
+          farmList.get(id).get(year)[month-1].addWeight(weight, day); 
       }
     } 
     catch (IOException e) 

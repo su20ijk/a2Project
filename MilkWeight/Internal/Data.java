@@ -41,12 +41,12 @@ import java.util.TreeMap;
  */
 public class Data 
 {
-  // Main data structure, a Map of Farm IDs paired to a Map of years paired to
+  // Data data structure, a Map of Farm IDs paired to a Map of years paired to
   // an array of FarmPerMonth objects
   private Map<String, Map<Integer, FarmPerMonth[]>> farmList;
   
   /**
-   * Default no arg constructor of Main class
+   * Default no arg constructor of Data class
    */
   public Data()
   {
@@ -103,17 +103,21 @@ public class Data
    * @return an array of milk weights by month
    */
   public int[] farmReport(String farmID, int year) 
-  {
+  { 
+    boolean valid = false;
     int[] report = new int[12];
     FarmPerMonth[] farm = farmList.get(farmID).get(year);
     if (farm != null)
     {
+      valid = true;
       for (int i = 0; i < farm.length; i++)
       {
         if (farm[i] != null)
           report[i] = farm[i].getWeightTotal();
       }
     }
+    if (!valid)
+      report[0] = -1;
     return report;
   }
   
@@ -124,6 +128,7 @@ public class Data
    */
   public Map<String, Integer> yearReport(int year)
   {
+    boolean valid = false;
     Map<String, Integer> report = new HashMap<String, Integer>();
     
     // Create Set from farmList
@@ -138,6 +143,7 @@ public class Data
       int totalWeight = 0;     
       if (farm != null)
       {
+        valid = true;
         for (int i = 0; i < farm.length; i++)
         {
           if(farm[i] != null)
@@ -146,6 +152,8 @@ public class Data
       }
         report.put(pair.getKey(), totalWeight);
     }
+    if (!valid)
+      report.put("-1", -1);
     return report;
   }
   
@@ -157,14 +165,18 @@ public class Data
    */
   public Map<String, Integer> monthReport(int year, int month)
   {
+    boolean valid = false;
     Map<String, Integer> report = new HashMap<String, Integer>();
     Iterator<Entry<String, Map<Integer, FarmPerMonth[]>>> iter = farmList.entrySet().iterator();
     while (iter.hasNext())
     {
       Entry<String, Map<Integer, FarmPerMonth[]>> pair = iter.next();
       if (pair.getValue().get(year) != null && pair.getValue().get(year)[month-1] != null)
+        valid = true;
         report.put(pair.getKey(), pair.getValue().get(year)[month-1].getWeightTotal());
     }
+    if (!valid)
+      report.put("-1", -1);
     return report;
   }
   
@@ -179,36 +191,58 @@ public class Data
    */
   public Map<String, Integer> dateRangeReport(int year, int sMonth, int sDay, int eMonth, int eDay)
   {
+    boolean valid = false;
     Map<String, Integer> report = new HashMap<String, Integer>();
+    if (sMonth > eMonth || (sMonth == eMonth && sDay > eDay))
+    {
+      report.put("-1", -1);
+      return report;
+    }
+    else if (sMonth < 1 || sMonth > 12 || eMonth < 1 || eMonth > 12)
+    {
+      report.put("-1", -1);
+      return report;
+    }
+    else if (sDay < 1 || sDay > 31 || eDay < 1 || eDay > 31)
+    {
+      report.put("-1", -1);
+      return report;
+    }
     Iterator<Entry<String, Map<Integer, FarmPerMonth[]>>> iter = farmList.entrySet().iterator();
     while (iter.hasNext())
     {
       Entry<String, Map<Integer, FarmPerMonth[]>> pair = iter.next();
       FarmPerMonth[] farm = pair.getValue().get(year);
-      int weightTotal = 0;
-      for (int i  = sMonth - 1; i < eMonth; i++)
+      if (farm != null)
       {
-        if (farm[i] != null)
+        int weightTotal = 0;
+        for (int i  = sMonth - 1; i < eMonth; i++)
         {
-          if (i == sMonth - 1)
+          if (farm[i] != null)
           {
-            if (sMonth == eMonth)
-              weightTotal += farm[i].getWeightRange(sDay, eDay);
+            valid = true;
+            if (i == sMonth - 1)
+            {
+              if (sMonth == eMonth)
+                weightTotal += farm[i].getWeightRange(sDay, eDay);
+              else
+                weightTotal += farm[i].getWeightRange(sDay, 31);
+            }
+            else if (i == eMonth - 1)
+            {
+              weightTotal += farm[i].getWeightRange(1, eDay);
+            }
             else
-              weightTotal += farm[i].getWeightRange(sDay, 31);
-          }
-          else if (i == eMonth - 1)
-          {
-            weightTotal += farm[i].getWeightRange(1, eDay);
-          }
-          else
-          {
-            weightTotal += farm[i].getWeightTotal();
+            {
+              weightTotal += farm[i].getWeightTotal();
+            }
           }
         }
+        report.put(pair.getKey(), weightTotal);
       }
-      report.put(pair.getKey(), weightTotal);
     }
+    if (!valid)
+      report.put("-1", -1);
     return report;
   }
   

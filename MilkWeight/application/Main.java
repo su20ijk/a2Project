@@ -4,13 +4,14 @@
 package application;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import Internal.Data;
-import Internal.FarmPerMonth;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -161,9 +162,18 @@ public class Main extends Application {
 		dataTable.setStyle("-fx-border-color: black;");
 		centerContainer.getChildren().add(dataTable);
 		
-		TextField filePath=new TextField("File path here.");
-		filePath.setMaxWidth(100);
-		centerContainer.getChildren().add(filePath);
+		HBox botBox = new HBox();
+		botBox.setPadding(new Insets(15, 12, 15, 12));
+	    botBox.setSpacing(10);
+		Label labelOut = new Label("File Path:");
+		TextField filePath=new TextField();
+		filePath.setPromptText("File path for output here.");
+		filePath.setMinWidth(300);
+		Button buttonFinalEnter = new Button("Save");
+	    button.setPrefSize(100, 20);
+		botBox.getChildren().addAll(labelOut, filePath, buttonFinalEnter);
+		botBox.setAlignment(Pos.CENTER);
+		centerContainer.getChildren().add(botBox);
 		
 		centerContainer.setAlignment(Pos.CENTER);
 		centerContainer.setSpacing(10);
@@ -195,6 +205,37 @@ public class Main extends Application {
 	    		e -> {
 	    			textOutputPrompt.setText("Please enter your desired month and year below:");
 	    			IDInput.setPromptText("Enter format: <Month>,<Year>");
+	    		}
+	    		);
+	    buttonFinalEnter.setOnAction(
+	    		e -> {
+	    			String wroteOut = "";
+	    			String toWrite = dataTable.getText();
+	    			if(!toWrite.equals("Date table")) {
+	    				String lineOne = toWrite.split("\n")[0];
+	    				String[] fragments = lineOne.split(":");
+	    				String nameOne = fragments[0].split(" ")[0];
+	    				String nameTwo = fragments[1].trim();
+	    				String nameThree = fragments[2].trim().split("          ")[1];
+	    				wroteOut = nameOne+","+nameTwo+","+nameThree+"\n";
+	    				String[] lines = dataTable.getText().split("\n");
+	    				for(int i=0; i<lines.length; i++) {
+	    					String[] lineFrags = lines[i].split(":");
+	    					String valueOne = lineFrags[0].split(" ")[1];
+	    					String valueTwo = lineFrags[2].trim().split("          ")[0];
+	    					String valueThree = lineFrags[3].trim();
+	    					wroteOut = wroteOut+valueOne+","+valueTwo+","+valueThree+"\n";
+	    				}
+	    				try {
+							FileWriter csvWriter = new FileWriter(filePath.getText());
+							csvWriter.append(wroteOut);
+							csvWriter.flush();
+							csvWriter.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+	    			}
+	    			
 	    		}
 	    		);
 	    submitIDInput.setOnAction(
